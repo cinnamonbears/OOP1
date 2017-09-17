@@ -1,7 +1,5 @@
 package com.Homework1.Classes;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,44 +10,29 @@ public class PersonCollection {
 
     @XmlElement(name="Person")
     private List<Person> people = new ArrayList<>();
-    public ImporterExporter myImporterExporter;
-    public String myDataFile;
-    public MatchingAlgorithm myAlgorithm;
-    public DisplayMatches myDisplay;
+    private List<MatchPair> myMatches = new ArrayList<>();
+    private Importer myImporterExporter;
+    private String myDataFile;
+    private MatchingAlgorithm myAlgorithm;
+    private DisplayMatches myDisplay;
 
-    public ImporterExporter getMyImporterExporter() {
-        return myImporterExporter;
-    }
+    public void setMyImporterExporter(Importer myImporterExporter) { this.myImporterExporter = myImporterExporter; }
 
-    public void setMyImporterExporter(ImporterExporter myImporterExporter) {
-        this.myImporterExporter = myImporterExporter;
-    }
+    public void setMyDataFile(String myDataFile) { this.myDataFile = myDataFile; }
 
-    public String getMyDataFile() {
-        return myDataFile;
-    }
+    public List<Person> getPeople() { return people; }
 
-    public void setMyDataFile(String myDataFile) {
-        this.myDataFile = myDataFile;
-    }
+    public void setPeople(List<Person> people) { this.people = people; }
 
-    public List<Person> Read(){
-        return myImporterExporter.Read(myDataFile);
-    }
-
-    public void Write(List<MatchPair> matches, String saveLocation){ myDisplay.Write(matches, saveLocation); }
-
-    public List<Person> getPeople() {
-        return people;
-    }
-
-    public void setPeople(List<Person> people) {
-        this.people = people;
-    }
-
-    public List<MatchPair> Matches(){ return myAlgorithm.Matches(people); }
-
-    public MatchingAlgorithm getMyAlgorithm() { return myAlgorithm; }
+    public void setMyMatches(List<MatchPair> myMatches) { this.myMatches = myMatches; }
 
     public void setMyAlgorithm(MatchingAlgorithm myAlgorithm) { this.myAlgorithm = myAlgorithm; }
+
+    public void setMyDisplay(DisplayMatches myDisplay) { this.myDisplay = myDisplay; }
+
+    public List<Person> Read(){ return myImporterExporter.Read(myDataFile); }
+
+    public void Write(String saveLocation){ myDisplay.Write(myMatches, saveLocation); }
+
+    public List<MatchPair> Matches(){ return myAlgorithm.Matches(people); }
 }

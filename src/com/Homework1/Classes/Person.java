@@ -83,11 +83,39 @@ public class Person {
     @JsonProperty("Phone2")
     private String phone2;
 
+    public Person() {
+    }
+
+    public Person(Integer objectId, String stateFileNumber, String socialSecurityNumber, String firstName,
+                  String middleName, String lastName, Integer birthYear, Integer birthMonth, Integer birthDay,
+                  String gender, String newbornScreeningNumber, String isPartOfMultipleBirth, Integer birthOrder,
+                  String birthCounty, String motherFirstName, String motherMiddleName, String motherLastName, String phone1,
+                  String phone2) {
+        this.objectId = objectId;
+        this.stateFileNumber = stateFileNumber;
+        this.socialSecurityNumber = socialSecurityNumber;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.birthYear = birthYear;
+        this.birthMonth = birthMonth;
+        this.birthDay = birthDay;
+        this.gender = gender;
+        this.newbornScreeningNumber = newbornScreeningNumber;
+        this.isPartOfMultipleBirth = isPartOfMultipleBirth;
+        this.birthOrder = birthOrder;
+        this.birthCounty = birthCounty;
+        this.motherFirstName = motherFirstName;
+        this.motherMiddleName = motherMiddleName;
+        this.motherLastName = motherLastName;
+        this.phone1 = phone1;
+        this.phone2 = phone2;
+    }
+
     public Integer getObjectId() {
         return objectId;
     }
 
-//    @XmlElement(name = "ObjectId")
     public void setObjectId(Integer objectId) {
         this.objectId = objectId;
     }

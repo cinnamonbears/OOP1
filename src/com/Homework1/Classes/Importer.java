@@ -2,16 +2,19 @@ package com.Homework1.Classes;
 
 import java.util.List;
 
-public abstract class ImporterExporter {
+public abstract class Importer {
     protected String name;
     protected String description;
 
-    public ImporterExporter(String name, String description) {
+    public Importer(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public abstract void Write(List<Person> list, String filename);
+    public String getName() {
+        return name;
+    }
+
     public abstract List<Person> Read(String filename);
 
     protected String AppendExtension(String filename, String extension)
@@ -31,13 +34,5 @@ public abstract class ImporterExporter {
             filename += extension;
 
         return filename;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

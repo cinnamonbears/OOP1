@@ -3,29 +3,33 @@ package com.Homework1;
 import com.Homework1.Classes.*;
 
 public class Main {
+
     private static final MatchingAlgorithm[] algorithmTypes = {
             new MatchingAlgorithm1("1"),
             new MatchingAlgorithm2("2"),
             new MatchingAlgorithm3("3")
     };
-    private static final ImporterExporter[] importerExporters ={
-        new JsonImporterExporter("json", "Json representation"),
-        new XMLImporterExporter("xml", "Json representation")
+
+    private static final Importer[] importerExporters ={
+        new JsonImporter("json", "Json representation"),
+        new XMLImporter("xml", "Json representation")
     };
+
     private static final DisplayMatches[] displayMatches = {
-            new DisplayMatchesConsole("")
+            new DisplayMatchesConsole(""),
+            new DisplayMatchesTxt(".txt")
+
     };
-    private static final String DEFAULT_LOCATION = "";
 
     private static Boolean validateFileType(String type) {
-        for (ImporterExporter ies : importerExporters) {
+        for (Importer ies : importerExporters) {
             if (type.contains(ies.getName()) && ies != null) {
                 return true;
             }
         }
         StringBuilder errorString = new StringBuilder();
         errorString.append("The File Type must be either");
-        for (ImporterExporter ies : importerExporters) {
+        for (Importer ies : importerExporters) {
             errorString.append(" ").append(ies.getName());
             errorString.append(" or");
         }
@@ -51,35 +55,22 @@ public class Main {
         return false;
     }
 
-    public static void main(String[] args) {
-        String saveLocation = "";
-        PersonCollection myPeople = new PersonCollection();
-
-        for (int i = 0; i < args.length; ++i) {
-            if(i == 0){
-                if(!validateAlgorithmSelection(args[i])){ return; }
-                myPeople.setMyAlgorithm(GetMatchingAlgorithm(args[i]));
-            }
-            if(i == 1) {
-                if(!validateFileType(args[i])){ return; }
-                myPeople.setMyImporterExporter(GetFileFormat(args[i]));
-                myPeople.setMyDataFile(args[i]);
-            }
-            if(i == 2){
-                saveLocation = args[i];
+    private static String validateSaveLocation(String destination){
+        if(destination.isEmpty()){
+            return "";
+        }else{
+            if(destination.endsWith(".txt")){
+                return destination;
             }else{
-                saveLocation = DEFAULT_LOCATION;
+                return destination.concat(".txt");
             }
         }
-
-        myPeople.setPeople(myPeople.Read());
-        myPeople.Write(myPeople.Matches(), saveLocation);
     }
 
-    public static ImporterExporter GetFileFormat(String fileType){
-        ImporterExporter result = null;
+    public static Importer GetFileFormat(String fileType){
+        Importer result = null;
         while(result == null){
-            for (ImporterExporter ies: importerExporters) {
+            for (Importer ies: importerExporters) {
                 if(fileType.toLowerCase().endsWith(ies.getName().toLowerCase())){
                     return ies;
                 }
@@ -101,14 +92,34 @@ public class Main {
     }
 
     public static DisplayMatches GetDisplayType(String file){
-        DisplayMatches result = null;
-        while (result == null){
-            for(DisplayMatches dm : displayMatches){
-                if(file.equals(dm.getFileName())){
+        DisplayMatches result = displayMatches[0];
+        if(file.endsWith(".txt")){
+            return displayMatches[1];
+        }
+        return displayMatches[0];
+    }
 
-                }
+    public static void main(String[] args) {
+        String saveLocation = "";
+        PersonCollection myPeople = new PersonCollection();
+
+        for (int i = 0; i < args.length; ++i) {
+            if(i == 0){
+                if(!validateAlgorithmSelection(args[i])){ return; }
+                myPeople.setMyAlgorithm(GetMatchingAlgorithm(args[i]));
+            }
+            if(i == 1) {
+                if(!validateFileType(args[i])){ return; }
+                myPeople.setMyImporterExporter(GetFileFormat(args[i]));
+                myPeople.setMyDataFile(args[i]);
+            }
+            if(i == 2){
+                saveLocation = validateSaveLocation(args[i]);
             }
         }
-        return result;
+        myPeople.setMyDisplay(GetDisplayType(saveLocation));
+        myPeople.setPeople(myPeople.Read());
+        myPeople.setMyMatches(myPeople.Matches());
+        myPeople.Write(saveLocation);
     }
 }

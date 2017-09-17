@@ -9,7 +9,11 @@ public class DisplayMatchesConsole extends DisplayMatches {
 
     @Override
     public void Write(List<MatchPair> matches, String location) {
-
+        for(MatchPair mp : matches){
+            System.out.println("Match");
+            System.out.println(mp.person1);
+            System.out.println(mp.person2);
+        }
     }
 
 }
